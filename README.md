@@ -1,3 +1,3 @@
 # Game of Network
 
-* [test](./test.md)
+* [Notebook 1](./a-song-of-ice-and-network.html)
