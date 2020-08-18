@@ -13199,11 +13199,50 @@ I used the database from <a href="https://github.com/mathbeveridge/asoiaf">https
 <li>Intel Core  i5-9300H 2,40 GHz, 4 core, 8 Mo cache memory (turbo 4,10 GHz)</li>
 <li>12 GB RAM </li>
 </ul>
+<h2 id="Summary-of-data">Summary of data<a class="anchor-link" href="#Summary-of-data">&#182;</a></h2><p>The dataset was made according to the books. Two characters are interacting if they are in a 15-words range in a book. The more they are interacting the more the interactions weight is high.</p>
+<p>Here we consider the 5 first books. There is 2823 relations on 796 nodes which are the characters in the saga.</p>
+<p>Here are some stats about the interactions of characters.</p>
+<table>
+<thead><tr>
+<th style="text-align:center">min</th>
+<th style="text-align:center">max</th>
+<th style="text-align:center">avg interactions</th>
+<th style="text-align:center">stdev</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">110</td>
+<td style="text-align:center">4.620294599017998</td>
+<td style="text-align:center">8.651722878451903</td>
+</tr>
+</tbody>
+</table>
+<h2 id="How-do-I-compare">How do I compare<a class="anchor-link" href="#How-do-I-compare">&#182;</a></h2><p>Due to the implementation of Neo4j's graphs, I had considered 2 different mesures of time. One is the first iteration of the algorithm and the other is the average time of the following iterations where the Neo4j's cache memory reduces the computation time.</p>
 <p>In order to compare networkx and Neo4j, I chose to compare the different implemantion of Betweenness centrality, Page Rank, Label Propagation, BFS and MST.
 They are different type of algorithms which are implemented both in Neo4j and Networkx. Much of the algorithms are implemented in only one of them.
 I will compare the average time to compute these algorithms with the same graph.</p>
-<p>Due to the implementation of Neo4j's graphs, I had considered 2 different mesures of time. One is the first iteration of the algorithm and the other is the average time of the following iterations where the Neo4j's cache memory reduces the computation time.</p>
+<h3 id="The-Algorithms">The Algorithms<a class="anchor-link" href="#The-Algorithms">&#182;</a></h3><h4 id="Page-Rank">Page Rank<a class="anchor-link" href="#Page-Rank">&#182;</a></h4><p>This algorithm aims to compute the impact of a node on the graph. I assume Neo4j and Networkx used the same implemented of this algorithms like in this <a href="http://infolab.stanford.edu/~backrub/google.html">paper</a>.
+I configure damping= 0.85 and max iterations=20 in both softwares.</p>
+<h4 id="Betweenness-Centrality">Betweenness Centrality<a class="anchor-link" href="#Betweenness-Centrality">&#182;</a></h4><p>This algorithm returns the node which is in the most path between nodes. I don't really know if the implementations are the same.
+I used the default parameters.</p>
+<h4 id="Label-Propagation">Label Propagation<a class="anchor-link" href="#Label-Propagation">&#182;</a></h4><p>This algorithm is a community clustering algorithm which creates community of nodes whose have similary labels.
+I think the implementations are the same because the algorithm is clear as we can see <a href="https://neo4j.com/docs/graph-data-science/current/algorithms/label-propagation/">here</a>.
+I also used default parameters.</p>
+<h4 id="BFS">BFS<a class="anchor-link" href="#BFS">&#182;</a></h4><p>This algorithm is a classic in graph analysis. I assume both implementations are equivalent. 
+I limit the depth at 5 nodes and start at the node <code>Jon Snow</code>.</p>
+<h4 id="MST">MST<a class="anchor-link" href="#MST">&#182;</a></h4><p>It is also a classic algorithm. 
+Neo4j used Prim's algorithm and Networkx used Kruskal's one. The complexity is similar between the two algorithms.
+I used default parameters.</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Creation-of-the-GOT's-Graph">Creation of the GOT's Graph<a class="anchor-link" href="#Creation-of-the-GOT's-Graph">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -13221,13 +13260,6 @@ I will compare the average time to compute these algorithms with the same graph.
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Creation-of-the-GOT's-Graph">Creation of the GOT's Graph<a class="anchor-link" href="#Creation-of-the-GOT's-Graph">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -13281,7 +13313,7 @@ I will compare the average time to compute these algorithms with the same graph.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">liste</span><span class="o">=</span><span class="p">[]</span>
@@ -13307,7 +13339,7 @@ I will compare the average time to compute these algorithms with the same graph.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1.6309340572357178
+<pre>1.6449413061141969
 </pre>
 </div>
 </div>
@@ -13319,7 +13351,7 @@ I will compare the average time to compute these algorithms with the same graph.
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="PageRank">PageRank<a class="anchor-link" href="#PageRank">&#182;</a></h3>
+<h3 id="Page-rank-(unweighted)">Page rank (unweighted)<a class="anchor-link" href="#Page-rank-(unweighted)">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -13331,7 +13363,7 @@ I will compare the average time to compute these algorithms with the same graph.
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">liste</span><span class="o">=</span><span class="p">[]</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">a</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">b</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
     <span class="n">liste</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
@@ -13351,7 +13383,51 @@ I will compare the average time to compute these algorithms with the same graph.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0.12770500183105468
+<pre>0.09266203880310059
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="PageRank-(weighted)">PageRank (weighted)<a class="anchor-link" href="#PageRank-(weighted)">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">liste</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+    <span class="n">b</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">liste</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.1326475238800049
 </pre>
 </div>
 </div>
@@ -13395,7 +13471,7 @@ I will compare the average time to compute these algorithms with the same graph.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1.3613700866699219e-06
+<pre>1.189708709716797e-06
 </pre>
 </div>
 </div>
@@ -13413,7 +13489,7 @@ I will compare the average time to compute these algorithms with the same graph.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">liste</span><span class="o">=</span><span class="p">[]</span>
@@ -13440,7 +13516,7 @@ I will compare the average time to compute these algorithms with the same graph.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>0.007812273502349853
+<pre>0.008865909576416016
 </pre>
 </div>
 </div>
@@ -13458,7 +13534,7 @@ I will compare the average time to compute these algorithms with the same graph.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">liste</span><span class="o">=</span><span class="p">[]</span>
@@ -13485,8 +13561,8 @@ I will compare the average time to compute these algorithms with the same graph.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>6.320476531982422e-06
-[1.0728836059570312e-05, 5.4836273193359375e-06, 1.9073486328125e-06, 1.430511474609375e-06, 1.430511474609375e-06]
+<pre>3.1709671020507814e-07
+[1.9073486328125e-06, 1.1920928955078125e-06, 4.76837158203125e-07, 2.384185791015625e-07, 2.384185791015625e-07]
 </pre>
 </div>
 </div>
@@ -13500,12 +13576,10 @@ I will compare the average time to compute these algorithms with the same graph.
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Tests-Neo4j-(ms)">Tests Neo4j (ms)<a class="anchor-link" href="#Tests-Neo4j-(ms)">&#182;</a></h2><p>This test were not really automated because I wanted to pass through the cache memory in order to have to really time of algorithms. Therefore I had to restart the server between each test. That is why there not has much data as networkx. However, I think this is enough to have a decent overview of the capacity of each one.</p>
 <h3 id="Code-used:">Code used:<a class="anchor-link" href="#Code-used:">&#182;</a></h3><h4 id="Graph-in-memory">Graph in memory<a class="anchor-link" href="#Graph-in-memory">&#182;</a></h4>
-<pre><code>CALL gds.graph.create.cypher(
-    'G',
-    'MATCH (n) RETURN id(n) AS id',
-    'MATCH (a)-[]-(b) RETURN id(a) AS source, id(b) AS target'
-)
-YIELD graphName, nodeCount, relationshipCount, createMillis;</code></pre>
+<pre><code>call gds.graph.create("G","Character","Interacts",
+{
+        relationshipProperties: 'weight'
+    })</code></pre>
 <h4 id="Betweenness-centrality">Betweenness centrality<a class="anchor-link" href="#Betweenness-centrality">&#182;</a></h4>
 <pre><code> CALL gds.alpha.betweenness.stream({
 nodeQuery: 'MATCH (p) RETURN id(p) AS id',
@@ -13514,8 +13588,13 @@ nodeQuery: 'MATCH (p) RETURN id(p) AS id',
 YIELD nodeId,centrality
 return gds.util.asNode(nodeId).name as user,centrality
 order by centrality DESC limit 1</code></pre>
-<h4 id="Page-rank">Page rank<a class="anchor-link" href="#Page-rank">&#182;</a></h4>
+<h4 id="Page-rank-(unweighted)">Page rank (unweighted)<a class="anchor-link" href="#Page-rank-(unweighted)">&#182;</a></h4>
 <pre><code>CALL gds.pageRank.stream('G',{maxIterations:20, dampingFactor:0.85})
+YIELD nodeId, score
+RETURN gds.util.asNode(nodeId).name AS name, score
+ORDER BY score DESC, name ASC limit 1</code></pre>
+<h4 id="Page-rank-(weighted)">Page rank (weighted)<a class="anchor-link" href="#Page-rank-(weighted)">&#182;</a></h4>
+<pre><code>CALL gds.pageRank.stream('got',{maxIterations:20, dampingFactor:0.85,relationshipWeightProperty: 'weight'})
 YIELD nodeId, score
 RETURN gds.util.asNode(nodeId).name AS name, score
 ORDER BY score DESC, name ASC limit 1</code></pre>
@@ -13555,6 +13634,9 @@ RETURN createMillis, computeMillis, writeMillis, effectiveNodeCount;</code></pre
 <p>betweenness #2 (ms) : 288,95,85,61,65,69,68,69</p>
 <p>page rank #2 (ms) : 294,191,146</p>
 <p>page rank #3 (ms) : 451, 241, 154,</p>
+<p>page rank (weighted) : 347,215, 122,123</p>
+<p>page rank (weighted) : 343,201, 138,114
+page rank (weighted) : 284,233, 125,110</p>
 <p>label propagation #1 (ms) : 230, 89,88,68,47,62,47,43,47</p>
 <p>label propagation #2 (ms) : 120, 62,51,33,27,38,30</p>
 <p>label propagation #3 (ms) : 170, 74, 64,79,44,49,47,46,67,</p>
@@ -13577,9 +13659,14 @@ RETURN createMillis, computeMillis, writeMillis, effectiveNodeCount;</code></pre
 <td style="text-align:center">1,6</td>
 </tr>
 <tr>
-<td style="text-align:center">Page rank</td>
+<td style="text-align:center">Page rank (unweighted)</td>
 <td style="text-align:center">0,36 (0,1 after)</td>
-<td style="text-align:center">0,12 </td>
+<td style="text-align:center">0,09</td>
+</tr>
+<tr>
+<td style="text-align:center">Page rank(weighted)</td>
+<td style="text-align:center">0,36 (0,1 after)</td>
+<td style="text-align:center">0,12</td>
 </tr>
 <tr>
 <td style="text-align:center">Label Propagation</td>
@@ -13605,11 +13692,24 @@ RETURN createMillis, computeMillis, writeMillis, effectiveNodeCount;</code></pre
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>It is hard to have a clear decision because there is huge gap for either software. Most of the time Networkx is far better than neo4j. But is some case (Betweenness and Page rank) Neo4j is better and getting even better after the first iteration due to the use of a cache. 
+<h2 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h2><p>It is hard to have a clear decision because there is huge gap for either software. Most of the time Networkx is far better than neo4j. But is some case (Betweenness and Page rank) Neo4j is better or  getting even better after the first iteration due to the use of a cache. We also can see that weighted or unweighted Page rank doesn't change anything for neo4j but changes a bit for networkx. (This precisition is lower for neo4j)
 However, there is a huge gap between Neo4j and Network regarding to BFS's algorithm (1e8 order of magnitude...)</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
